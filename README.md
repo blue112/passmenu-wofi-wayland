@@ -1,9 +1,9 @@
-# passmenu-rofi-wayland
-passmenu + rofi, inelegantly hacked together to work with wl-copy &amp; sway
+# passmenu-wofi-wayland
+passmenu + wofi, inelegantly hacked together to work with wl-copy &amp; sway
 
 It's [zx2c4's](https://www.zx2c4.com/) wonderful passmenu script, modified to work with rofi & sway.
 
-Essentially, I took out the `xdotool` part, and replaced `pass -c` with `wl-copy`.  It then clears the clipboard after 45 seconds.
+Essentially, I took out the `xdotool` part, and use wofi instead of dmenu.  It then clears the clipboard after 45 seconds.
 
 Add something like this to your sway config:
 
