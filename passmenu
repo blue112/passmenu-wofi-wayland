@@ -15,7 +15,7 @@ password_files=( $(find -L $prefix -name "*.gpg" ) )
 password_files=( "${password_files[@]#"$prefix"/}" )
 password_files=( "${password_files[@]%.gpg}" )
 
-password=$( (echo "_abort" ; printf '%s\n' "${password_files[@]}" ) | wofi -k /dev/null -dmenu "$@")
+password=$( (echo "_abort" ; printf '%s\n' "${password_files[@]}" ) | wofi -k /dev/null -d menu "$@")
 
 [[ -n $password ]] || exit
 
