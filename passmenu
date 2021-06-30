@@ -10,15 +10,22 @@ fi
 
 IFS=$'\n'
 
+PID=$$
+echo "$PID" > /tmp/passmenu
+
+export PASSWORD_STORE_DIR="$HOME/.password-multi"
+
 prefix=$(readlink -f ${PASSWORD_STORE_DIR-~/.password-store})
 password_files=( $(find -L $prefix -name "*.gpg" ) )
 password_files=( "${password_files[@]#"$prefix"/}" )
 password_files=( "${password_files[@]%.gpg}" )
 
-password=$( (echo "_abort" ; printf '%s\n' "${password_files[@]}" ) | wofi -k /dev/null -dmenu "$@")
+password=$( (echo "_abort" ; printf '%s\n' "${password_files[@]}" ) | wofi -k /dev/null -d menu -- "$@")
 
 [[ -n $password ]] || exit
 
 if [[ $typeit -eq 0 ]]; then
-	pass show -c "$password" 2>/dev/null & sleep 45s && wl-copy -c
+    OUT=$(pass show "$password")
+    notify-send -t 5000 "$(echo "$OUT" | grep '^login:' | sed 's/^login: //')"
+    wl-copy "$(echo "$OUT" | head -1)" & sleep 45s && grep "^${PID}$" /tmp/passmenu && wl-copy -c && notify-send -t 2000 "clipboard cleaned"
 fi
